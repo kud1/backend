@@ -41,7 +41,7 @@ public class RequestFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 //        String uri = request.getRequestURI();
-//        if(!excludes.contains(uri)) {
+//        if(!isExcludesUrl(excludes, uri)) {
 //            String token = request.getHeader("Authorization");
 //            if (token == null || "".equals(token) || cacheManager.getCache("TOKEN").get(token) == null) {
 //                servletResponse.getWriter().write(VALID_ERROR);
@@ -49,5 +49,14 @@ public class RequestFilter implements Filter {
 //            }
 //        }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isExcludesUrl(List<String> excludes, String uri) {
+        for (String excUrl : excludes) {
+            if(uri.startsWith(excUrl)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
